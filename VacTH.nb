@@ -1,0 +1,755 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     28192,        747]
+NotebookOptionsPosition[     27288,        722]
+NotebookOutlinePosition[     27756,        739]
+CellTagsIndexPosition[     27713,        736]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Clear", " ", "previous", " ", "definitions"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ClearAll", "[", 
+     RowBox[{
+     "zeta", ",", "eta", ",", "R", ",", "Z", ",", "Rp", ",", "Zp", ",", "aE", 
+      ",", "bE", ",", "aI", ",", "bI", ",", "an", ",", "bn", ",", "psi", ",", 
+      "dPsiDzeta", ",", "dPsiDeta"}], "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Define", " ", "symbolic", " ", "variables"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"zeta", "=", 
+     RowBox[{"Symbol", "[", "\"\<zeta\>\"", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"eta", "=", 
+     RowBox[{"Symbol", "[", "\"\<eta\>\"", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Set", " ", "fixed", " ", "lengths", " ", "for", " ", "coefficient", " ", 
+     "vectors"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"lengthaEbE", "=", "7"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"lengthaIbI", "=", "4"}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Define", " ", "coefficient", " ", "lists", " ", "with", " ", "fixed", 
+     " ", "lengths"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"aE", "=", 
+     RowBox[{"Array", "[", 
+      RowBox[{"aEvar", ",", "lengthaEbE"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"bE", "=", 
+     RowBox[{"Array", "[", 
+      RowBox[{"bEvar", ",", "lengthaEbE"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"aI", "=", 
+     RowBox[{"Array", "[", 
+      RowBox[{"aIvar", ",", "lengthaIbI"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"bI", "=", 
+     RowBox[{"Array", "[", 
+      RowBox[{"bIvar", ",", "lengthaIbI"}], "]"}]}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Ensure", " ", "normalization", " ", 
+     RowBox[{"(", 
+      RowBox[{"if", " ", "needed"}], ")"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"aE", "=", 
+     RowBox[{
+      RowBox[{"Normalize", "[", "aE", "]"}], "*", "lengthaEbE"}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"bE", "=", 
+     RowBox[{
+      RowBox[{"Normalize", "[", "bE", "]"}], "*", "lengthaEbE"}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"aI", "=", 
+     RowBox[{
+      RowBox[{"Normalize", "[", "aI", "]"}], "*", "lengthaIbI"}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"bI", "=", 
+     RowBox[{
+      RowBox[{"Normalize", "[", "bI", "]"}], "*", "lengthaIbI"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Define", " ", "\[Psi]_base", 
+     RowBox[{"(", 
+      RowBox[{"\[Zeta]", ",", "\[Eta]"}], ")"}], " ", "WITHOUT", " ", "Rp", 
+     " ", "and", " ", "Zp"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"commonFactorBase", "=", 
+     RowBox[{
+      RowBox[{"Sinh", "[", "zeta", "]"}], "/", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"Cosh", "[", "zeta", "]"}], "-", 
+        RowBox[{"Cos", "[", "eta", "]"}]}], ")"}]}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{"psiBase", "=", 
+     RowBox[{"commonFactorBase", "*", "\[IndentingNewLine]", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"aE", "[", "n", "]"}], "*", 
+           RowBox[{"LegendreQ", "[", 
+            RowBox[{
+             RowBox[{"n", "-", "0.5"}], ",", "1", ",", 
+             RowBox[{"Cosh", "[", "zeta", "]"}]}], "]"}], "*", 
+           RowBox[{"Cos", "[", 
+            RowBox[{"n", "*", "eta"}], "]"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"n", ",", "0", ",", "an"}], "}"}]}], "]"}], "+", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"bE", "[", "n", "]"}], "*", 
+           RowBox[{"LegendreQ", "[", 
+            RowBox[{
+             RowBox[{"n", "-", "0.5"}], ",", "1", ",", 
+             RowBox[{"Cosh", "[", "zeta", "]"}]}], "]"}], "*", 
+           RowBox[{"Sin", "[", 
+            RowBox[{"n", "*", "eta"}], "]"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"n", ",", "1", ",", "bn"}], "}"}]}], "]"}], "+", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"aI", "[", "n", "]"}], "*", 
+           RowBox[{"LegendreP", "[", 
+            RowBox[{
+             RowBox[{"n", "-", "0.5"}], ",", "1", ",", 
+             RowBox[{"Cosh", "[", "zeta", "]"}]}], "]"}], "*", 
+           RowBox[{"Cos", "[", 
+            RowBox[{"n", "*", "eta"}], "]"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"n", ",", "0", ",", 
+            RowBox[{"an", "-", "1"}]}], "}"}]}], "]"}], "+", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"bI", "[", "n", "]"}], "*", 
+           RowBox[{"LegendreP", "[", 
+            RowBox[{
+             RowBox[{"n", "-", "0.5"}], ",", "1", ",", 
+             RowBox[{"Cosh", "[", "zeta", "]"}]}], "]"}], "*", 
+           RowBox[{"Sin", "[", 
+            RowBox[{"n", "*", "eta"}], "]"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"n", ",", "1", ",", 
+            RowBox[{"bn", "-", "1"}]}], "}"}]}], "]"}]}], ")"}]}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Compute", " ", "partial", " ", "derivatives", " ", "symbolically"}], 
+    "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"dPsiDzetaBase", "=", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{"D", "[", 
+       RowBox[{"psiBase", ",", "zeta"}], "]"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"dPsiDetaBase", "=", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{"D", "[", 
+       RowBox[{"psiBase", ",", "eta"}], "]"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Analytical", " ", "expressions", " ", "for", " ", 
+     RowBox[{"\\(", 
+      RowBox[{
+       RowBox[{"\\", "zeta"}], 
+       RowBox[{"(", 
+        RowBox[{"R", ",", "Z"}], ")"}]}], "\\)"}], " ", "and", " ", 
+     RowBox[{"\\(", 
+      RowBox[{
+       RowBox[{"\\", "eta"}], 
+       RowBox[{"(", 
+        RowBox[{"R", ",", "Z"}], ")"}]}], "\\)"}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"zetaRZ", "[", 
+      RowBox[{"R_", ",", "Z_", ",", "Rp_", ",", "Zp_"}], "]"}], ":=", 
+     RowBox[{"ArcTanh", "[", 
+      RowBox[{"2", "/", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"R", "/", "Rp"}], "+", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"Z", "-", "Zp"}], ")"}], "^", "2"}], "/", 
+          RowBox[{"(", 
+           RowBox[{"R", " ", "Rp"}], ")"}]}], "+", 
+         RowBox[{"Rp", "/", "R"}]}], ")"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"etaRZ", "[", 
+      RowBox[{"R_", ",", "Z_", ",", "Rp_", ",", "Zp_"}], "]"}], ":=", 
+     RowBox[{"ArcTan", "[", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"Z", "-", "Zp"}], ")"}], "/", 
+       RowBox[{"(", 
+        RowBox[{"R", "-", "Rp"}], ")"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Precompute", " ", "symbolic", " ", "expressions", " ", "for", " ", "the",
+      " ", "Jacobian"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"RexprSym", "=", 
+     RowBox[{"Rp", "*", 
+      RowBox[{
+       RowBox[{"Sinh", "[", "zeta", "]"}], "/", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"Cosh", "[", "zeta", "]"}], "-", 
+         RowBox[{"Cos", "[", "eta", "]"}]}], ")"}]}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"ZexprSym", "=", 
+     RowBox[{"Zp", "+", 
+      RowBox[{"(", 
+       RowBox[{"Rp", "*", 
+        RowBox[{
+         RowBox[{"Sin", "[", "eta", "]"}], "/", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"Cosh", "[", "zeta", "]"}], "-", 
+           RowBox[{"Cos", "[", "eta", "]"}]}], ")"}]}]}], ")"}]}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{"JacobianSym", "=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"D", "[", 
+          RowBox[{"RexprSym", ",", "zeta"}], "]"}], ",", 
+         RowBox[{"D", "[", 
+          RowBox[{"RexprSym", ",", "eta"}], "]"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"D", "[", 
+          RowBox[{"ZexprSym", ",", "zeta"}], "]"}], ",", 
+         RowBox[{"D", "[", 
+          RowBox[{"ZexprSym", ",", "eta"}], "]"}]}], "}"}]}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{"JacobianInvSym", "=", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{"Inverse", "[", "JacobianSym", "]"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Extract", " ", "symbolic", " ", "derivatives", " ", "of", " ", "zeta", 
+     " ", "and", " ", "eta", " ", "with", " ", "respect", " ", "to", " ", "R",
+      " ", "and", " ", "Z"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"dZetaDRSym", "=", 
+     RowBox[{"JacobianInvSym", "[", 
+      RowBox[{"[", 
+       RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ";"}], " ", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"\[PartialD]", "\[Zeta]"}], "/", 
+     RowBox[{"\[PartialD]", "R"}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"dZetaDZSym", "=", 
+     RowBox[{"JacobianInvSym", "[", 
+      RowBox[{"[", 
+       RowBox[{"1", ",", "2"}], "]"}], "]"}]}], ";"}], " ", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"\[PartialD]", "\[Zeta]"}], "/", 
+     RowBox[{"\[PartialD]", "Z"}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"dEtaDRSym", "=", 
+     RowBox[{"JacobianInvSym", "[", 
+      RowBox[{"[", 
+       RowBox[{"2", ",", "1"}], "]"}], "]"}]}], ";"}], " ", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"\[PartialD]", "\[Eta]"}], "/", 
+     RowBox[{"\[PartialD]", "R"}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"dEtaDZSym", "=", 
+     RowBox[{"JacobianInvSym", "[", 
+      RowBox[{"[", 
+       RowBox[{"2", ",", "2"}], "]"}], "]"}]}], ";"}], " ", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"\[PartialD]", "\[Eta]"}], "/", 
+     RowBox[{"\[PartialD]", "Z"}]}], "*)"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Function", " ", "to", " ", "compute", " ", "numerical", " ", 
+     "derivatives", " ", "at", " ", "given", " ", "lists", " ", "of", " ", 
+     "R", " ", "and", " ", "Z", " ", "values"}], "*)"}], 
+   RowBox[{
+    RowBox[{
+     RowBox[{"computePsiDerivatives", "[", 
+      RowBox[{"Rlist_", ",", "Zlist_", ",", "RpValue_", ",", "ZpValue_"}], 
+      "]"}], ":=", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "psi", ",", "dPsiDzeta", ",", "dPsiDeta", ",", "dPsiDR", ",", 
+         "dPsiDZ", ",", "dZetadR", ",", "dZetadZ", ",", "dEtadR", ",", 
+         "dEtadZ", ",", "dPsiDRFunc", ",", "dPsiDZFunc", ",", "dPsidRVals", 
+         ",", "dPsidZVals"}], "}"}], ",", 
+       RowBox[{"(*", 
+        RowBox[{"Multiply", " ", "by", " ", "Rp"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"psi", "=", 
+         RowBox[{"Simplify", "[", 
+          RowBox[{"RpValue", "*", "psiBase"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"dPsiDzeta", "=", 
+         RowBox[{"Simplify", "[", 
+          RowBox[{"RpValue", "*", "dPsiDzetaBase"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"dPsiDeta", "=", 
+         RowBox[{"Simplify", "[", 
+          RowBox[{"RpValue", "*", "dPsiDetaBase"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "Substitute", " ", "Rp", " ", "and", " ", "Zp", " ", "in", " ", 
+          "the", " ", "precomputed", " ", "Jacobian", " ", "derivatives"}], 
+         "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"dZetadR", "=", 
+         RowBox[{"Evaluate", "[", 
+          RowBox[{"dZetaDRSym", "/.", " ", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Rp", "->", "RpValue"}], ",", 
+             RowBox[{"Zp", "->", "ZpValue"}]}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"dZetadZ", "=", 
+         RowBox[{"Evaluate", "[", 
+          RowBox[{"dZetaDZSym", "/.", " ", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Rp", "->", "RpValue"}], ",", 
+             RowBox[{"Zp", "->", "ZpValue"}]}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"dEtadR", "=", 
+         RowBox[{"Evaluate", "[", 
+          RowBox[{"dEtaDRSym", "/.", " ", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Rp", "->", "RpValue"}], ",", 
+             RowBox[{"Zp", "->", "ZpValue"}]}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"dEtadZ", "=", 
+         RowBox[{"Evaluate", "[", 
+          RowBox[{"dEtaDZSym", "/.", " ", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Rp", "->", "RpValue"}], ",", 
+             RowBox[{"Zp", "->", "ZpValue"}]}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "Chain", " ", "rule", " ", "for", " ", "the", " ", "derivatives", 
+          " ", "with", " ", "respect", " ", "to", " ", "R", " ", "and", " ", 
+          "Z"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"dPsiDR", "=", 
+         RowBox[{"Simplify", "[", 
+          RowBox[{
+           RowBox[{"dPsiDzeta", "*", "dZetadR"}], "+", 
+           RowBox[{"dPsiDeta", "*", "dEtadR"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"dPsiDZ", "=", 
+         RowBox[{"Simplify", "[", 
+          RowBox[{
+           RowBox[{"dPsiDzeta", "*", "dZetadZ"}], "+", 
+           RowBox[{"dPsiDeta", "*", "dEtadZ"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "Compute", " ", "numerical", " ", "values", " ", "for", " ", "given",
+           " ", "lists", " ", "of", " ", "R", " ", "and", " ", "Z"}], "*)"}], 
+        
+        RowBox[{"dPsidRVals", "=", 
+         RowBox[{"MapThread", "[", 
+          RowBox[{
+           RowBox[{"Function", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"r", ",", "z"}], "}"}], ",", 
+             RowBox[{
+              RowBox[{"Evaluate", "[", "dPsiDR", "]"}], "/.", " ", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"zeta", "->", 
+                 RowBox[{"zetaRZ", "[", 
+                  RowBox[{"r", ",", "z", ",", "RpValue", ",", "ZpValue"}], 
+                  "]"}]}], ",", 
+                RowBox[{"eta", "->", 
+                 RowBox[{"etaRZ", "[", 
+                  RowBox[{"r", ",", "z", ",", "RpValue", ",", "ZpValue"}], 
+                  "]"}]}]}], "}"}]}]}], "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"Rlist", ",", "Zlist"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"dPsidZVals", "=", 
+         RowBox[{"MapThread", "[", 
+          RowBox[{
+           RowBox[{"Function", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"r", ",", "z"}], "}"}], ",", 
+             RowBox[{
+              RowBox[{"Evaluate", "[", "dPsiDZ", "]"}], "/.", " ", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"zeta", "->", 
+                 RowBox[{"zetaRZ", "[", 
+                  RowBox[{"r", ",", "z", ",", "RpValue", ",", "ZpValue"}], 
+                  "]"}]}], ",", 
+                RowBox[{"eta", "->", 
+                 RowBox[{"etaRZ", "[", 
+                  RowBox[{"r", ",", "z", ",", "RpValue", ",", "ZpValue"}], 
+                  "]"}]}]}], "}"}]}]}], "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"Rlist", ",", "Zlist"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "Return", " ", "transposed", " ", "list", " ", "of", " ", 
+          "results"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"{", 
+          RowBox[{"dPsidRVals", ",", "dPsidZVals"}], "}"}], "]"}]}]}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Define", " ", "the", " ", "Regularization", " ", "Function"}], 
+    "*)"}], 
+   RowBox[{
+    RowBox[{"Regularization", "[", 
+     RowBox[{"Rvalue_", ",", "Zvalue_", ",", "Rp_", ",", "Zp_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "zeta", ",", "eta", ",", "dPsiDeta", ",", "d2PsiDeta2", ",", "rU", ",",
+         "rUFunc", ",", "integral"}], "}"}], ",", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Compute", " ", "zeta", " ", "and", " ", "eta", " ", "from", " ", "R", 
+        " ", "and", " ", "Z"}], "*)"}], 
+      RowBox[{
+       RowBox[{"zeta", "=", 
+        RowBox[{"zetaRZ", "[", 
+         RowBox[{"Rvalue", ",", "Zvalue", ",", "Rp", ",", "Zp"}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"eta", "=", 
+        RowBox[{"etaRZ", "[", 
+         RowBox[{"Rvalue", ",", "Zvalue", ",", "Rp", ",", "Zp"}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Compute", " ", "first", " ", "and", " ", "second", " ", 
+         "derivatives", " ", "of", " ", "psi", " ", 
+         RowBox[{"w", ".", "r", ".", "t", ".", "eta"}], " ", "at", " ", 
+         "zeta0"}], "*)"}], 
+       RowBox[{"dPsiDeta", "=", 
+        RowBox[{
+         RowBox[{"D", "[", 
+          RowBox[{"psiBase", ",", "eta"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{"zeta", "->", "zeta0"}], "}"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"d2PsiDeta2", "=", 
+        RowBox[{
+         RowBox[{"D", "[", 
+          RowBox[{"dPsiDeta", ",", "eta"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{"zeta", "->", "zeta0"}], "}"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"dPsiDetazeta0", " ", "=", " ", 
+        RowBox[{"dPsiDeta", "/.", 
+         RowBox[{"{", 
+          RowBox[{"zeta", "->", "zeta0"}], "}"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Compute", " ", "regularization", " ", "function", " ", "rU"}], 
+        "*)"}], 
+       RowBox[{"rU", "=", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"d2PsiDeta2", "*", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"Cosh", "[", "zeta0", "]"}], "-", 
+                  RowBox[{"Cos", "[", "eta", "]"}]}], ")"}], "/", "Rp"}], 
+               ")"}], "^", "2"}]}], "+", 
+            RowBox[{"dPsiDetazeta0", "*", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"Cosh", "[", "zeta0", "]"}], "-", 
+                 RowBox[{"Cos", "[", "eta", "]"}]}], ")"}], "*", 
+               RowBox[{
+                RowBox[{"Sin", "[", "eta", "]"}], "/", 
+                RowBox[{"Rp", "^", "2"}]}]}], ")"}]}]}], ")"}], "^", "2"}], 
+         "*", 
+         RowBox[{"(", 
+          RowBox[{"Rp", "/", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"Cosh", "[", "zeta0", "]"}], "-", 
+             RowBox[{"Cos", "[", "eta", "]"}]}], ")"}]}], ")"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Convert", " ", "rU", " ", "into", " ", "a", " ", "numerical", " ", 
+         "function"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"rUFunc", "=", 
+        RowBox[{"Function", "[", 
+         RowBox[{
+          RowBox[{"{", "eta", "}"}], ",", 
+          RowBox[{"Evaluate", "[", "rU", "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+         "Perform", " ", "numerical", " ", "integration", " ", "over", " ", 
+          "\[Eta]", " ", "from"}], "-", 
+         RowBox[{"\[Pi]", " ", "to", " ", "\[Pi]"}]}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"integral", "=", 
+        RowBox[{"NIntegrate", "[", 
+         RowBox[{
+          RowBox[{"rUFunc", "[", "eta", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"eta", ",", 
+            RowBox[{"-", "Pi"}], ",", "Pi"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"Return", " ", "the", " ", "final", " ", "result"}], "*)"}], 
+       "\[IndentingNewLine]", "integral"}]}], "]"}]}], "\[IndentingNewLine]", 
+   
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Example", " ", "computation", " ", "for", " ", "Rp"}], "=", 
+      "0.5"}], ",", 
+     RowBox[{"Zp", "=", "0.0"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rvalues", "=", 
+     RowBox[{"{", 
+      RowBox[{"0.6", ",", "0.7", ",", "0.8", ",", "0.9", ",", "1.0"}], 
+      "}"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Zvalues", "=", 
+     RowBox[{"{", 
+      RowBox[{"0.1", ",", "0.2", ",", "0.3", ",", "0.4", ",", "0.5"}], 
+      "}"}]}], ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", "\"\<Testing etaRZ...\>\"", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<etaRZ values: \>\"", ",", 
+      RowBox[{"Thread", "[", 
+       RowBox[{"etaRZ", "[", 
+        RowBox[{"Rvalues", ",", "Zvalues", ",", "0.5", ",", "0.0"}], "]"}], 
+       "]"}]}], "]"}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"numericalDerivatives", "=", 
+     RowBox[{"computePsiDerivatives", "[", 
+      RowBox[{"Rvalues", ",", "Zvalues", ",", "0.5", ",", "0.0"}], "]"}]}], 
+    ";"}], "\n", 
+   RowBox[{"numericalDerivatives", ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.9503599198964233`*^9, 3.950359919897891*^9}, 
+   3.950359998246611*^9, {3.9503602250990257`*^9, 3.95036023753886*^9}, {
+   3.950360353564795*^9, 3.950360410957266*^9}, {3.950360507397361*^9, 
+   3.950360532481022*^9}, {3.950417007023224*^9, 3.950417008713332*^9}, {
+   3.950417177096196*^9, 3.950417215823388*^9}, {3.950417733133922*^9, 
+   3.9504177343141937`*^9}, {3.950417771523912*^9, 3.950417788771332*^9}, {
+   3.950417929675565*^9, 3.950417937811592*^9}, {3.950419185520994*^9, 
+   3.950419189787298*^9}, {3.950419244517415*^9, 3.950419246618316*^9}, 
+   3.950423808054193*^9, {3.950423862568128*^9, 3.950423888786975*^9}, {
+   3.950423954308891*^9, 3.9504239592949543`*^9}, 3.950424306594079*^9, {
+   3.95042440458489*^9, 3.950424412311041*^9}, {3.950425037283846*^9, 
+   3.950425061563498*^9}, {3.950430988508279*^9, 3.950430994446261*^9}, {
+   3.950431226135431*^9, 3.950431243658312*^9}, {3.950431421162916*^9, 
+   3.950431443594146*^9}, {3.95043155652379*^9, 3.950431569848201*^9}, {
+   3.950431690221031*^9, 3.950431709078338*^9}, {3.95043177371196*^9, 
+   3.950431785668974*^9}, {3.9505079459489098`*^9, 3.950507948429015*^9}, {
+   3.9511976687596645`*^9, 3.95119767930641*^9}, {3.9511977896923637`*^9, 
+   3.951197834420368*^9}, {3.951198722541519*^9, 
+   3.9511987727532215`*^9}},ExpressionUUID->"9d29a9be-a18e-420b-b6ee-\
+d7f5b240b19c"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Testing etaRZ...\"\>"], "Print",
+ CellChangeTimes->{{3.9504250465694103`*^9, 3.950425065325018*^9}, 
+   3.950426021623631*^9, 3.950431528110125*^9},
+ CellLabel->
+  "During evaluation of \
+In[13]:=",ExpressionUUID->"a61d8410-c20c-477d-be77-54984f0423d1"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"etaRZ values: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+    "0.7853981633974484`", ",", "0.7853981633974484`", ",", 
+     "0.7853981633974483`", ",", "0.7853981633974483`", ",", 
+     "0.7853981633974483`"}], "}"}]}],
+  SequenceForm[
+  "etaRZ values: ", {0.7853981633974484, 0.7853981633974484, 
+   0.7853981633974483, 0.7853981633974483, 0.7853981633974483}],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.9504250465694103`*^9, 3.950425065325018*^9}, 
+   3.950426021623631*^9, 3.9504315281106157`*^9},
+ CellLabel->
+  "During evaluation of \
+In[13]:=",ExpressionUUID->"cbb5b377-ed2c-4531-8681-6601b95fc888"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "Define", " ", "the", " ", "save", " ", "path", " ", "dynamically"}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"precomputedFile", "=", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+        "\"\<precomputedExpressions.m\>\""}], "}"}], "]"}]}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Ensure", " ", "all", " ", "symbolic", " ", "variables", " ", "are", " ", 
+     "fully", " ", "evaluated", " ", "before", " ", "saving"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"precomputedExpressions", "=", 
+     RowBox[{"{", 
+      RowBox[{
+      "psiBase", ",", "dPsiDzetaBase", ",", "dPsiDetaBase", ",", "zetaRZ", 
+       ",", "etaRZ", ",", "RexprSym", ",", "ZexprSym", ",", "JacobianSym", 
+       ",", "JacobianInvSym", ",", "dZetaDRSym", ",", "dZetaDZSym", ",", 
+       "dEtaDRSym", ",", "dEtaDZSym"}], "}"}]}], ";"}], "\[IndentingNewLine]",
+    "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Save", " ", "the", " ", "expressions"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"Save", "[", 
+     RowBox[{"precomputedFile", ",", "precomputedExpressions"}], "]"}], ";"}],
+    "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{
+     "\"\<Precomputed expressions saved to: \>\"", ",", "precomputedFile"}], 
+     "]"}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.95041924871843*^9, 3.95041926516201*^9}, {
+  3.950419410573591*^9, 3.9504194186809883`*^9}, {3.950419477374151*^9, 
+  3.950419501375746*^9}, {3.950419711070038*^9, 3.9504197195203857`*^9}, {
+  3.950420012900998*^9, 3.950420057113254*^9}, {3.950425320809295*^9, 
+  3.950425328830646*^9}},
+ CellLabel->"In[75]:=",ExpressionUUID->"f501b387-8092-4c6b-aa2f-30c38201dbd1"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Precomputed expressions saved to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/yangyangzhang/Library/CloudStorage/OneDrive-Personal/Documents/\
+Documents/Postdoc/exercises/WEST/precomputedExpressions.m\"\>"}],
+  SequenceForm[
+  "Precomputed expressions saved to: ", 
+   "/Users/yangyangzhang/Library/CloudStorage/OneDrive-Personal/Documents/\
+Documents/Postdoc/exercises/WEST/precomputedExpressions.m"],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.950419288001304*^9, 3.950419442894911*^9, 3.950419480180035*^9, 
+   3.950419733955671*^9, {3.950420034468115*^9, 3.950420060102145*^9}, 
+   3.950420143199511*^9, 3.9504253531476183`*^9, 3.950426025875573*^9},
+ CellLabel->
+  "During evaluation of \
+In[75]:=",ExpressionUUID->"726a2824-db83-4be3-8b43-63c8c168507c"]
+}, Open  ]]
+},
+WindowSize->{1298.5714285714284`, 847.7142857142857},
+WindowMargins->{{
+  141.85714285714286`, Automatic}, {-5.571428571428555, Automatic}},
+FrontEndVersion->"14.0 for Microsoft Windows (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"fa338182-3cc1-416b-b0c7-b77f1ff9b6a3"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 22967, 600, 1893, "Input",ExpressionUUID->"9d29a9be-a18e-420b-b6ee-d7f5b240b19c"],
+Cell[CellGroupData[{
+Cell[23572, 626, 271, 5, 22, "Print",ExpressionUUID->"a61d8410-c20c-477d-be77-54984f0423d1"],
+Cell[23846, 633, 679, 16, 22, "Print",ExpressionUUID->"cbb5b377-ed2c-4531-8681-6601b95fc888"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[24574, 655, 1874, 45, 219, "Input",ExpressionUUID->"f501b387-8092-4c6b-aa2f-30c38201dbd1"],
+Cell[26451, 702, 821, 17, 22, "Print",ExpressionUUID->"726a2824-db83-4be3-8b43-63c8c168507c"]
+}, Open  ]]
+}
+]
+*)
+
