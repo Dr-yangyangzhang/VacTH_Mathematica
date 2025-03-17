@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     28192,        747]
-NotebookOptionsPosition[     27288,        722]
-NotebookOutlinePosition[     27756,        739]
-CellTagsIndexPosition[     27713,        736]
+NotebookDataLength[     29335,        781]
+NotebookOptionsPosition[     28558,        759]
+NotebookOutlinePosition[     29026,        776]
+CellTagsIndexPosition[     28983,        773]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -651,74 +651,111 @@ In[13]:=",ExpressionUUID->"cbb5b377-ed2c-4531-8681-6601b95fc888"]
 }, Open  ]]
 }, Open  ]],
 
-Cell[CellGroupData[{
-
 Cell[BoxData[
  RowBox[{
   RowBox[{"(*", 
-   RowBox[{
-   "Define", " ", "the", " ", "save", " ", "path", " ", "dynamically"}], 
-   "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"Define", " ", "the", " ", "objective", " ", 
+    RowBox[{"function", ":", 
+     RowBox[{
+      RowBox[{"minimize", " ", "squared", " ", "error"}], "+", 
+      "regularization"}]}]}], "*)"}], 
   RowBox[{
    RowBox[{
-    RowBox[{"precomputedFile", "=", 
-     RowBox[{"FileNameJoin", "[", 
-      RowBox[{"{", 
+    RowBox[{
+     RowBox[{"objectiveFunction", "[", 
+      RowBox[{"aEvars_", ",", "bEvars_", ",", "aIvars_", ",", "bIvars_"}], 
+      "]"}], ":=", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"computedPsi", ",", "errorTerm", ",", "regTerm"}], "}"}], ",", 
+       RowBox[{"(*", 
+        RowBox[{"Compute", " ", "Psi", " ", "derivatives"}], "*)"}], 
        RowBox[{
-        RowBox[{"NotebookDirectory", "[", "]"}], ",", 
-        "\"\<precomputedExpressions.m\>\""}], "}"}], "]"}]}], ";"}], "\n", 
-   "\[IndentingNewLine]", 
+        RowBox[{"computedPsi", "=", 
+         RowBox[{"computePsiDerivatives", "[", 
+          RowBox[{
+          "RList", ",", "ZList", ",", "RpValue", ",", "ZpValue", ",", 
+           RowBox[{"Array", "[", 
+            RowBox[{"aEvar", ",", "7"}], "]"}], ",", 
+           RowBox[{"Array", "[", 
+            RowBox[{"bEvar", ",", "7"}], "]"}], ",", 
+           RowBox[{"Array", "[", 
+            RowBox[{"aIvar", ",", "4"}], "]"}], ",", 
+           RowBox[{"Array", "[", 
+            RowBox[{"bIvar", ",", "4"}], "]"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Compute", " ", "squared", " ", "error", " ", "term"}], 
+         "*)"}], 
+        RowBox[{"errorTerm", "=", 
+         RowBox[{"0.5", "*", 
+          RowBox[{"Total", "[", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"computedPsi", "-", "mData"}], ")"}], "^", "2"}], "]"}],
+            "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Regularization", " ", "term", " ", 
+          RowBox[{"(", 
+           RowBox[{"optional", ",", 
+            RowBox[{"can", " ", "be", " ", "adjusted"}]}], ")"}]}], "*)"}], 
+        RowBox[{"regTerm", "=", 
+         RowBox[{"0.1", "*", 
+          RowBox[{"Total", "[", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"aEvars", "^", "2"}], "+", 
+              RowBox[{"bEvars", "^", "2"}], "+", 
+              RowBox[{"aIvars", "^", "2"}], "+", 
+              RowBox[{"bIvars", "^", "2"}]}], ")"}], "]"}], "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "Return", " ", "the", " ", "function", " ", "to", " ", "be", " ", 
+          "minimized"}], "*)"}], 
+        RowBox[{"errorTerm", "+", "regTerm"}]}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
    RowBox[{"(*", 
     RowBox[{
-    "Ensure", " ", "all", " ", "symbolic", " ", "variables", " ", "are", " ", 
-     "fully", " ", "evaluated", " ", "before", " ", "saving"}], "*)"}], 
+     RowBox[{
+     "Perform", " ", "the", " ", "optimization", " ", "to", " ", "find", " ", 
+      "the", " ", "best"}], "-", 
+     RowBox[{"fit", " ", "parameters"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"solution", "=", 
+     RowBox[{"NMinimize", "[", 
+      RowBox[{
+       RowBox[{"objectiveFunction", "[", 
+        RowBox[{"aE", ",", "bE", ",", "aI", ",", "bI"}], "]"}], ",", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{"{", 
+         RowBox[{"aE", ",", "bE", ",", "aI", ",", "bI"}], "}"}], "]"}]}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Extract", " ", "optimized", " ", "values"}], "*)"}], 
    "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"precomputedExpressions", "=", 
-     RowBox[{"{", 
-      RowBox[{
-      "psiBase", ",", "dPsiDzetaBase", ",", "dPsiDetaBase", ",", "zetaRZ", 
-       ",", "etaRZ", ",", "RexprSym", ",", "ZexprSym", ",", "JacobianSym", 
-       ",", "JacobianInvSym", ",", "dZetaDRSym", ",", "dZetaDZSym", ",", 
-       "dEtaDRSym", ",", "dEtaDZSym"}], "}"}]}], ";"}], "\[IndentingNewLine]",
-    "\[IndentingNewLine]", 
+    RowBox[{"optimizedCoefficients", "=", 
+     RowBox[{
+      RowBox[{"Flatten", "[", 
+       RowBox[{"{", 
+        RowBox[{"aE", ",", "bE", ",", "aI", ",", "bI"}], "}"}], "]"}], "/.", 
+      " ", 
+      RowBox[{"solution", "[", 
+       RowBox[{"[", "2", "]"}], "]"}]}]}], ";"}], "\[IndentingNewLine]", "\n", 
    RowBox[{"(*", 
-    RowBox[{"Save", " ", "the", " ", "expressions"}], "*)"}], "\n", 
-   RowBox[{
-    RowBox[{"Save", "[", 
-     RowBox[{"precomputedFile", ",", "precomputedExpressions"}], "]"}], ";"}],
-    "\n", "\[IndentingNewLine]", 
+    RowBox[{"Print", " ", "results"}], "*)"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"Print", "[", 
      RowBox[{
-     "\"\<Precomputed expressions saved to: \>\"", ",", "precomputedFile"}], 
+     "\"\<Optimized Coefficients: \>\"", ",", "optimizedCoefficients"}], 
      "]"}], ";"}]}]}]], "Input",
- CellChangeTimes->{{3.95041924871843*^9, 3.95041926516201*^9}, {
-  3.950419410573591*^9, 3.9504194186809883`*^9}, {3.950419477374151*^9, 
-  3.950419501375746*^9}, {3.950419711070038*^9, 3.9504197195203857`*^9}, {
-  3.950420012900998*^9, 3.950420057113254*^9}, {3.950425320809295*^9, 
-  3.950425328830646*^9}},
- CellLabel->"In[75]:=",ExpressionUUID->"f501b387-8092-4c6b-aa2f-30c38201dbd1"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"Precomputed expressions saved to: \"\>", 
-   "\[InvisibleSpace]", \
-"\<\"/Users/yangyangzhang/Library/CloudStorage/OneDrive-Personal/Documents/\
-Documents/Postdoc/exercises/WEST/precomputedExpressions.m\"\>"}],
-  SequenceForm[
-  "Precomputed expressions saved to: ", 
-   "/Users/yangyangzhang/Library/CloudStorage/OneDrive-Personal/Documents/\
-Documents/Postdoc/exercises/WEST/precomputedExpressions.m"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.950419288001304*^9, 3.950419442894911*^9, 3.950419480180035*^9, 
-   3.950419733955671*^9, {3.950420034468115*^9, 3.950420060102145*^9}, 
-   3.950420143199511*^9, 3.9504253531476183`*^9, 3.950426025875573*^9},
- CellLabel->
-  "During evaluation of \
-In[75]:=",ExpressionUUID->"726a2824-db83-4be3-8b43-63c8c168507c"]
-}, Open  ]]
+ CellChangeTimes->{{3.9512095940982304`*^9, 
+  3.9512095940982304`*^9}},ExpressionUUID->"1862168d-e272-d744-bd4b-\
+2bf385a87403"]
 },
 WindowSize->{1298.5714285714284`, 847.7142857142857},
 WindowMargins->{{
@@ -745,10 +782,7 @@ Cell[23572, 626, 271, 5, 22, "Print",ExpressionUUID->"a61d8410-c20c-477d-be77-54
 Cell[23846, 633, 679, 16, 22, "Print",ExpressionUUID->"cbb5b377-ed2c-4531-8681-6601b95fc888"]
 }, Open  ]]
 }, Open  ]],
-Cell[CellGroupData[{
-Cell[24574, 655, 1874, 45, 219, "Input",ExpressionUUID->"f501b387-8092-4c6b-aa2f-30c38201dbd1"],
-Cell[26451, 702, 821, 17, 22, "Print",ExpressionUUID->"726a2824-db83-4be3-8b43-63c8c168507c"]
-}, Open  ]]
+Cell[24552, 653, 4002, 104, 314, "Input",ExpressionUUID->"1862168d-e272-d744-bd4b-2bf385a87403"]
 }
 ]
 *)
